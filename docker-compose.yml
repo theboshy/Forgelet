@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  minecraft-server:
+    image: theboshy-minecraft-server:1.0.0
+    container_name: theboshy-mine-server
+    build:
+      context: .
+      args:
+        - MINECRAFT_JAR_URL=${MINECRAFT_JAR_URL}
+        - MINECRAFT_PORT=${MINECRAFT_PORT}
+        - JAVA_VERSION=${JAVA_VERSION}
+    ports:
+      - "${MINECRAFT_PORT}:${MINECRAFT_PORT}"
