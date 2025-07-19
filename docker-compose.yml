@@ -12,3 +12,8 @@ services:
         - JAVA_VERSION=${JAVA_VERSION}
     ports:
       - "${MINECRAFT_PORT}:${MINECRAFT_PORT}"
+    volumes:
+      - minecraft-data:/minecraft/forge-server  # Persistent server data
+
+volumes:
+  minecraft-data:
