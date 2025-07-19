@@ -1,81 +1,90 @@
-# Forgelet - Docker Minecraft with Forge Server
+# Forgelet - Docker Minecraft Forge Server
 
-A Docker-based solution for easily deploying and managing 
-Minecraft Forge servers with preconfigured settings and mods.
+A Docker-based solution for easily deploying and managing Minecraft Forge servers with persistent data and easy customization.
 
 ## Features
-- Dockerized Minecraft Forge server
-- Pre-configuration support
-- Mod management system
-- Custom world deployment
-- JVM arguments optimization
-- Easy server properties configuration
+- 🐳 **Dockerized Minecraft Forge server** with automatic setup
+- 🔄 **Dynamic server versions** via environment variables
+- 💾 **Persistent data storage** with Docker volumes
+- ⚙️ **Easy customization** - mods, worlds, settings
+- 🚀 **Zero-configuration startup** - works out of the box
+- 📦 **Production ready** - pull from Docker Hub
 
 ## Prerequisites
 - Docker installed on your system
-- Git (for cloning the repository)
-- Minimum 4GB of RAM (8GB recommended)
+- Minimum 4GB of RAM (8GB recommended for modded servers)
 
 ## Quick Start
 
-### 1. Clone the Repository
+### Build from Source
 ```bash
-  git clone [https://github.com/yourusername/docker-minecraft-forge](https://github.com/yourusername/docker-minecraft-forge) cd docker-minecraft-forge
+# Clone and build
+git clone https://github.com/theboshy/Forgelet
+cd Forgelet
+cp .env.example .env  # Edit with your settings
+docker-compose up -d
 ```
 
-### 2. Configure Environment
-Create a `.env` file in the root directory:
-```env
- MINECRAFT_PORT=25565 
- JAVA_VERSION=17 
- MINECRAFT_JAR_URL=<forge-installer-url>
-```
+## 🎮 Server Management
 
-### 3. Build & Run
+### Customizing Your Server
+All server data is stored in the `minecraft-data` Docker volume. To customize:
 
-## Build the image
+1. **Stop the server**
+   ```bash
+   docker stop theboshy-mine-server
+   ```
+
+2. **Access and modify files directly in the volume:**
+   ```bash
+   # Add mods
+   docker run --rm -v minecraft-data:/data -v $(pwd):/host alpine cp /host/your-mod.jar /data/mods/
+   
+   # Edit server properties
+   docker run --rm -v minecraft-data:/data alpine vi /data/server.properties
+   
+   # Replace world data
+   docker run --rm -v minecraft-data:/data -v $(pwd):/host alpine cp -r /host/your-world /data/world
+   ```
+
+3. **Start the server**
+   ```bash
+   docker start theboshy-mine-server
+   ```
+
+### What You Can Customize:
+- **Mods** - Add `.jar` files to `mods/` folder
+- **World Data** - Replace `world/` folder with your custom world
+- **Server Settings** - Edit `server.properties` for server configuration
+- **JVM Settings** - Modify `user_jvm_args.txt` for memory allocation
+- **Any server files** - Configs, whitelists, banned-players.json, etc.
+
+### Managing the Server
 ```bash
-  docker-compose build
+# View logs
+docker logs -f theboshy-mine-server
+
+# Stop/Start/Restart
+docker stop theboshy-mine-server
+docker start theboshy-mine-server
+docker restart theboshy-mine-server
+
+# Backup server data
+docker run --rm -v minecraft-data:/data -v $(pwd):/backup alpine tar czf /backup/minecraft-backup.tar.gz -C /data .
+
+# Remove server (keeps data in volume)
+docker rm theboshy-mine-server
 ```
-## Run the container
-```bash
-  docker-compose up
-```
-
-## ⚙️ Server Configuration
-
-### Using `server_src/`
-The `server_src/` directory contains all server configurations that will be copied to the final server:
-_[see the example](https://github.com/theboshy/Forgelet/tree/main/example/server_src)_
-1. **Mods Installation**
-    - Place mod files in `server_src/mods/`
-    - All .jar files will be automatically installed
-
-2. **World Configuration**
-    - Place your world data in `server_src/world/`
-    - Include all dimension folders if needed
-
-3. **Server Properties**
-    - Modify `server_src/server.properties` for server settings
-    - Changes will be reflected on server startup
-
-4. **JVM Configuration**
-    - Edit `server_src/user_jvm_args.txt` for Java settings
-    - Default configuration:
-      ```
-      -Xmx8G
-      -Xms4G
-      -XX:+UseG1GC
-      ```
 
 ## 🔗 Useful Links
 - [Docker Documentation](https://docs.docker.com/)
 - [Forge Documentation](https://docs.minecraftforge.net/)
 - [Minecraft Server Properties Wiki](https://minecraft.fandom.com/wiki/Server.properties)
-- [CurseForge](https://www.curseforge.com/minecraft/mc-mods)
+- [CurseForge Mods](https://www.curseforge.com/minecraft/mc-mods)
 
 ## ⚠️ Important Notes
-- Always backup your world data before updates
-- Ensure mod compatibility with your Forge version
-- Check hardware requirements for your mod pack
-- Monitor server performance after configuration changes
+- **Always backup your world data** before major changes
+- **Stop the server** before modifying files in the volume
+- **Restart the server** after making configuration changes
+- **Check mod compatibility** with your Forge version
+- **Monitor resource usage** - modded servers need more RAM

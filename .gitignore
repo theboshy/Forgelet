@@ -33,7 +33,4 @@ backups/
 # Windows specific
 *.lnk
 
-# Server files - ignore contents but keep folder structure
-server_src/*
-!server_src/
-!server_src/README.md
+# Server files are now managed through Docker volumes
