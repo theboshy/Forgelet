@@ -16,27 +16,11 @@ A Docker-based solution for easily deploying and managing Minecraft Forge server
 
 ## Quick Start
 
-### Option 1: Pull from Docker Hub (Recommended)
-```bash
-# Create environment file
-echo "MINECRAFT_PORT=25565" > .env
-echo "JAVA_VERSION=21" >> .env  
-echo "MINECRAFT_JAR_URL=https://maven.minecraftforge.net/net/minecraftforge/forge/1.20.1-47.4.0/forge-1.20.1-47.4.0-installer.jar" >> .env
-
-# Run the server
-docker run -d \\
-  --name minecraft-server \\
-  -p 25565:25565 \\
-  -v minecraft-data:/minecraft/forge-server \\
-  --env-file .env \\
-  theboshy/minecraft-server:latest
-```
-
-### Option 2: Build from Source
+### Build from Source
 ```bash
 # Clone and build
-git clone https://github.com/yourusername/minecraft-forge-docker
-cd minecraft-forge-docker
+git clone https://github.com/theboshy/Forgelet
+cd Forgelet
 cp .env.example .env  # Edit with your settings
 docker-compose up -d
 ```
@@ -48,7 +32,7 @@ All server data is stored in the `minecraft-data` Docker volume. To customize:
 
 1. **Stop the server**
    ```bash
-   docker stop minecraft-server
+   docker stop theboshy-mine-server
    ```
 
 2. **Access and modify files directly in the volume:**
@@ -65,7 +49,7 @@ All server data is stored in the `minecraft-data` Docker volume. To customize:
 
 3. **Start the server**
    ```bash
-   docker start minecraft-server
+   docker start theboshy-mine-server
    ```
 
 ### What You Can Customize:
@@ -78,18 +62,18 @@ All server data is stored in the `minecraft-data` Docker volume. To customize:
 ### Managing the Server
 ```bash
 # View logs
-docker logs -f minecraft-server
+docker logs -f theboshy-mine-server
 
 # Stop/Start/Restart
-docker stop minecraft-server
-docker start minecraft-server
-docker restart minecraft-server
+docker stop theboshy-mine-server
+docker start theboshy-mine-server
+docker restart theboshy-mine-server
 
 # Backup server data
 docker run --rm -v minecraft-data:/data -v $(pwd):/backup alpine tar czf /backup/minecraft-backup.tar.gz -C /data .
 
 # Remove server (keeps data in volume)
-docker rm minecraft-server
+docker rm theboshy-mine-server
 ```
 
 ## 🔗 Useful Links
