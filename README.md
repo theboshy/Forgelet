@@ -44,29 +44,38 @@ Create a `.env` file in the root directory:
 
 ## ⚙️ Server Configuration
 
-### Using `server_src/`
-The `server_src/` directory contains all server configurations that will be copied to the final server:
+### Using `server_src/` - Configuration Overlay
+The `server_src/` directory acts as a **configuration overlay** that customizes your server:
+
+**How it works:**
+- Docker automatically installs Forge and generates all necessary server files
+- Any files you place in `server_src/` will **override** the auto-generated ones
+- This allows you to customize mods, settings, and worlds without rebuilding the image
+
 _[see the example](https://github.com/theboshy/Forgelet/tree/main/example/server_src)_
-1. **Mods Installation**
-    - Place mod files in `server_src/mods/`
-    - All .jar files will be automatically installed
 
-2. **World Configuration**
+1. **Custom Mods**
+    - Place your mod `.jar` files in `server_src/mods/`
+    - They will replace/add to the default mod collection
+
+2. **Custom World**
     - Place your world data in `server_src/world/`
-    - Include all dimension folders if needed
+    - Will override the auto-generated world
 
-3. **Server Properties**
-    - Modify `server_src/server.properties` for server settings
-    - Changes will be reflected on server startup
+3. **Custom Server Settings**
+    - Create/modify `server_src/server.properties` to override default settings
+    - Changes apply immediately on container restart
 
-4. **JVM Configuration**
-    - Edit `server_src/user_jvm_args.txt` for Java settings
-    - Default configuration:
+4. **Custom JVM Settings**
+    - Modify `server_src/user_jvm_args.txt` to override default Java settings
+    - Current default configuration:
       ```
       -Xmx8G
       -Xms4G
       -XX:+UseG1GC
       ```
+
+**💡 Pro Tip:** Start with an empty `server_src/` folder to get a vanilla Forge server, then add your customizations incrementally.
 
 ## 🔗 Useful Links
 - [Docker Documentation](https://docs.docker.com/)
