@@ -46,7 +46,7 @@ Create a `.env` file in the root directory:
 
 ### Using `server_src/`
 The `server_src/` directory contains all server configurations that will be copied to the final server:
-
+_[see the example](https://github.com/theboshy/Forgelet/tree/main/example/server_src)_
 1. **Mods Installation**
     - Place mod files in `server_src/mods/`
     - All .jar files will be automatically installed
