@@ -33,5 +33,7 @@ backups/
 # Windows specific
 *.lnk
 
-# Server files
-server_src/
+# Server files - ignore contents but keep folder structure
+server_src/*
+!server_src/
+!server_src/README.md
